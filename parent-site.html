@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Site</title>
+</head>
+<body>
+    <div>
+        <iframe src="http://iframe-site.pmr.vn" frameborder="1"></iframe>
+    </div>
+    <script>
+        if (window.addEventListener) {
+            window.addEventListener("message", onMessage, false);        
+        } 
+        else if (window.attachEvent) {
+            window.attachEvent("onmessage", onMessage, false);
+        }
+
+        function onMessage(event) {
+            // Check sender origin to be trusted
+            if (event.origin !== "http://iframe-site.pmr.vn") return;
+            var data = event.data;
+            if (typeof(window[data.func]) == "function") {
+                window[data.func].call(null, data.message);
+            }
+        }
+
+        // Function to be called from iframe
+        function parentFunc(message) {
+            alert(message);
+        }
+    </script>
+</body>
+</html>
